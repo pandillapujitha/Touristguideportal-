@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+
+<div class="login-box">
+
+<form id="loginForm">
+
+<input type="email" id="email" placeholder="Enter Email" required>
+
+<input type="password" id="password" placeholder="Enter Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+</div>
+
+<!-- Put the Firebase login script HERE -->
+<script type="module">
+
+import {
+auth,
+signInWithEmailAndPassword
+} from "./firebase.js";
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async (e) => {
+
+e.preventDefault();
+
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+try {
+
+await signInWithEmailAndPassword(auth, email, password);
+
+alert("Login Successful!");
+
+window.location.href = "booking.html";
+
+} catch (error) {
+
+alert("Login Failed: " + error.message);
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
