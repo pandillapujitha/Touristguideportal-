@@ -1,315 +1,1260 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Tourist Guide Portal - Book a Tour</title>
+<title>Tourist Guide Portal - Booking</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            min-height: 100vh;
-            background:
-                linear-gradient(
-                    rgba(0, 0, 0, 0.45),
-                    rgba(0, 0, 0, 0.65)
-                ),
-                url("https://images.unsplash.com/photo-1588598198321-9735fd524a14?auto=format&fit=crop&w=2000&q=80")
-                center / cover fixed;
-            color: white;
-        }
+/* =========================================================
+   RESET
+========================================================= */
 
-        /* NAVIGATION */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        nav {
-            width: 100%;
-            padding: 18px 7%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+html {
+    scroll-behavior: smooth;
+}
 
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(12px);
-        }
+body {
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
 
-        .logo {
-            font-size: 23px;
-            font-weight: bold;
-        }
+    min-height: 100vh;
 
-        .logo span {
-            color: #00e5ff;
-        }
+    color: #ffffff;
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-            font-size: 14px;
-        }
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(0, 220, 255, 0.18),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 90%,
+            rgba(100, 70, 255, 0.18),
+            transparent 35%
+        ),
+        #07111f;
 
-        nav a:hover {
-            color: #00e5ff;
-        }
+    overflow-x: hidden;
+}
 
-        /* MAIN */
 
-        .container {
-            min-height: calc(100vh - 75px);
+/* =========================================================
+   BACKGROUND
+========================================================= */
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    overflow: hidden;
+}
 
-            padding: 40px 20px;
-        }
+.background::before {
+    content: "";
+    position: absolute;
 
-        /* BOOKING CARD */
+    width: 500px;
+    height: 500px;
 
-        .booking-card {
-            width: 100%;
-            max-width: 560px;
+    top: -200px;
+    left: -150px;
 
-            padding: 35px;
+    border-radius: 50%;
 
-            border-radius: 25px;
+    background: #00d9ff;
 
-            background: rgba(255, 255, 255, 0.10);
+    opacity: 0.12;
 
-            border: 1px solid rgba(255, 255, 255, 0.25);
+    filter: blur(100px);
 
-            backdrop-filter: blur(20px);
+    animation: moveBlob 12s ease-in-out infinite;
+}
 
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.5);
+.background::after {
+    content: "";
+    position: absolute;
 
-            animation: slideUp 0.7s ease;
-        }
+    width: 500px;
+    height: 500px;
 
-        @keyframes slideUp {
+    right: -200px;
+    bottom: -200px;
 
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
+    border-radius: 50%;
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    background: #7357ff;
 
-        /* HEADING */
+    opacity: 0.14;
 
-        .heading {
-            text-align: center;
-            margin-bottom: 28px;
-        }
+    filter: blur(100px);
 
-        .heading h1 {
-            font-size: 35px;
-            margin-bottom: 8px;
-        }
+    animation: moveBlob2 15s ease-in-out infinite;
+}
 
-        .heading h1 span {
-            color: #00e5ff;
-        }
+@keyframes moveBlob {
 
-        .heading p {
-            color: #d6d6d6;
-            font-size: 14px;
-        }
+    0%, 100% {
+        transform: translate(0, 0);
+    }
 
-        /* FORM */
+    50% {
+        transform: translate(100px, 80px);
+    }
+}
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+@keyframes moveBlob2 {
 
-        label {
-            display: block;
-            margin-bottom: 7px;
+    0%, 100% {
+        transform: translate(0, 0);
+    }
 
-            font-size: 14px;
-            font-weight: bold;
-        }
+    50% {
+        transform: translate(-100px, -70px);
+    }
+}
 
-        input,
-        select {
 
-            width: 100%;
+/* =========================================================
+   NAVBAR
+========================================================= */
 
-            padding: 14px 15px;
+.navbar {
 
-            border: 1px solid rgba(255, 255, 255, 0.25);
+    width: 100%;
 
-            border-radius: 12px;
+    padding:
+        18px
+        6%;
 
-            background: rgba(0, 0, 0, 0.30);
+    display: flex;
 
-            color: white;
+    align-items: center;
 
-            font-size: 15px;
+    justify-content: space-between;
 
-            outline: none;
+    position: sticky;
 
-            transition: 0.25s;
-        }
+    top: 0;
 
-        input:focus,
-        select:focus {
+    z-index: 100;
 
-            border-color: #00e5ff;
+    background:
+        rgba(7, 17, 31, 0.78);
 
-            box-shadow:
-                0 0 0 3px
-                rgba(0, 229, 255, 0.12);
-        }
+    backdrop-filter:
+        blur(18px);
 
-        input::placeholder {
-            color: #c6c6c6;
-        }
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.08);
+}
 
-        select option {
-            background: #151515;
-            color: white;
-        }
+.logo {
 
-        /* BUTTON */
+    font-size: 21px;
 
-        .book-button {
+    font-weight: 800;
 
-            width: 100%;
+    letter-spacing: -0.5px;
+}
 
-            margin-top: 10px;
+.logo span {
 
-            padding: 15px;
+    color: #20d9ff;
+}
 
-            border: none;
+.nav-links {
 
-            border-radius: 13px;
+    display: flex;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #00c6ff,
-                    #0072ff
-                );
+    align-items: center;
 
-            color: white;
+    gap: 25px;
+}
 
-            font-size: 16px;
+.nav-links a {
 
-            font-weight: bold;
+    color: #cbd5e1;
 
-            cursor: pointer;
+    text-decoration: none;
 
-            transition: 0.25s;
-        }
+    font-size: 14px;
 
-        .book-button:hover {
+    transition: 0.25s;
+}
 
-            transform: translateY(-2px);
+.nav-links a:hover {
 
-            box-shadow:
-                0 10px 30px
-                rgba(0, 114, 255, 0.4);
-        }
+    color: #20d9ff;
+}
 
-        .book-button:active {
-            transform: scale(0.98);
-        }
 
-        .book-button:disabled {
+/* =========================================================
+   PAGE
+========================================================= */
 
-            opacity: 0.6;
+.page {
 
-            cursor: not-allowed;
+    width: 100%;
 
-            transform: none;
-        }
+    max-width: 1100px;
 
-        /* MESSAGE */
+    margin: auto;
 
-        #message {
+    padding:
+        60px
+        20px
+        100px;
+}
 
-            display: none;
 
-            margin-top: 18px;
+/* =========================================================
+   HERO
+========================================================= */
 
-            padding: 13px;
+.hero {
 
-            border-radius: 10px;
+    text-align: center;
 
-            text-align: center;
+    margin-bottom: 45px;
+}
 
-            font-size: 14px;
-        }
+.hero h1 {
 
-        .success {
+    font-size:
+        clamp(35px, 6vw, 60px);
 
-            display: block !important;
+    line-height: 1.05;
 
-            background:
-                rgba(0, 200, 120, 0.18);
+    font-weight: 800;
 
-            border:
-                1px solid
-                rgba(0, 255, 150, 0.4);
+    letter-spacing: -2px;
 
-            color: #7dffc4;
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #25dcff
+        );
 
-        .error {
+    -webkit-background-clip: text;
 
-            display: block !important;
+    background-clip: text;
 
-            background:
-                rgba(255, 50, 80, 0.18);
+    color: transparent;
 
-            border:
-                1px solid
-                rgba(255, 50, 80, 0.4);
+    margin-bottom: 16px;
+}
 
-            color: #ff9da9;
-        }
+.hero p {
 
-        /* INFO */
+    max-width: 650px;
 
-        .database-info {
+    margin: auto;
 
-            margin-top: 25px;
+    color: #9eabc0;
 
-            padding: 15px;
+    font-size: 16px;
 
-            border-radius: 12px;
+    line-height: 1.7;
+}
 
-            background:
-                rgba(0, 0, 0, 0.25);
 
-            text-align: center;
+/* =========================================================
+   CONTENT GRID
+========================================================= */
 
-            font-size: 12px;
+.content {
 
-            color: #cfcfcf;
-        }
+    display: grid;
 
-        .database-info strong {
-            color: #00e5ff;
-        }
+    grid-template-columns:
+        1fr
+        1.3fr;
 
-        /* MOBILE */
+    gap: 25px;
 
-        @media (max-width: 600px) {
+    align-items: stretch;
+}
 
-            nav {
-                padding: 15px 20px;
-            }
+
+/* =========================================================
+   INFORMATION CARD
+========================================================= */
+
+.info-card {
+
+    padding: 30px;
+
+    border-radius: 25px;
+
+    background:
+        rgba(255,255,255,0.055);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.25);
+}
+
+.info-card h2 {
+
+    font-size: 25px;
+
+    margin-bottom: 14px;
+}
+
+.info-card > p {
+
+    color: #9eabc0;
+
+    line-height: 1.7;
+
+    font-size: 14px;
+
+    margin-bottom: 28px;
+}
+
+
+/* DESTINATIONS */
+
+.destination {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    border-radius: 15px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.07);
+
+    transition: 0.25s;
+}
+
+.destination:hover {
+
+    transform:
+        translateX(5px);
+
+    border-color:
+        rgba(32,217,255,0.35);
+}
+
+.destination-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background:
+        rgba(32,217,255,0.10);
+
+    font-size: 22px;
+}
+
+.destination h3 {
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+.destination p {
+
+    color: #8290a5;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   BOOKING CARD
+========================================================= */
+
+.booking-card {
+
+    padding: 32px;
+
+    border-radius: 25px;
+
+    background:
+        rgba(255,255,255,0.065);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.35);
+}
+
+.booking-card h2 {
+
+    font-size: 25px;
+
+    margin-bottom: 7px;
+}
+
+.booking-card .subtitle {
+
+    color: #8e9bae;
+
+    font-size: 13px;
+
+    margin-bottom: 27px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 19px;
+}
+
+.form-group label {
+
+    display: block;
+
+    color: #dce5f2;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 14px 15px;
+
+    border-radius: 13px;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.11);
+
+    background:
+        rgba(0,0,0,0.22);
+
+    color: #ffffff;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s,
+        box-shadow 0.25s,
+        background 0.25s;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+    color: #657287;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+
+    border-color: #20d9ff;
+
+    background:
+        rgba(0,0,0,0.30);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(32,217,255,0.09);
+}
+
+.form-group select option {
+
+    background: #101a29;
+
+    color: #ffffff;
+}
+
+.form-group textarea {
+
+    min-height: 90px;
+
+    resize: vertical;
+}
+
+
+/* TWO COLUMNS */
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap: 15px;
+}
+
+
+/* =========================================================
+   BOOK BUTTON
+========================================================= */
+
+.book-button {
+
+    width: 100%;
+
+    margin-top: 7px;
+
+    padding: 16px;
+
+    border: none;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            135deg,
+            #00cfff,
+            #396cff
+        );
+
+    box-shadow:
+        0 12px 30px
+        rgba(0,160,255,0.20);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        opacity 0.2s;
+}
+
+.book-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 17px 35px
+        rgba(0,160,255,0.32);
+}
+
+.book-button:active {
+
+    transform:
+        scale(0.98);
+}
+
+.book-button:disabled {
+
+    opacity: 0.55;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+.message {
+
+    display: none;
+
+    margin-top: 17px;
+
+    padding: 13px 15px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.message.success {
+
+    display: block;
+
+    color: #75f5bd;
+
+    background:
+        rgba(25,210,130,0.09);
+
+    border:
+        1px solid
+        rgba(25,210,130,0.25);
+}
+
+.message.error {
+
+    display: block;
+
+    color: #ff8999;
+
+    background:
+        rgba(255,60,90,0.09);
+
+    border:
+        1px solid
+        rgba(255,60,90,0.25);
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+========================================================= */
+
+.security-note {
+
+    margin-top: 22px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.06);
+
+    color: #78869a;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+    text-align: center;
+}
+
+.security-note strong {
+
+    color: #20d9ff;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+
+    text-align: center;
+
+    color: #5f6d80;
+
+    font-size: 12px;
+
+    margin-top: 55px;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.spinner {
+
+    display: inline-block;
+
+    width: 15px;
+
+    height: 15px;
+
+    margin-right: 8px;
+
+    border:
+        2px solid
+        rgba(255,255,255,0.35);
+
+    border-top-color:
+        #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+        spin 0.7s linear infinite;
+
+    vertical-align: -2px;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .content {
+
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+
+        order: 2;
+    }
+
+    .booking-card {
+
+        order: 1;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .navbar {
+
+        padding:
+            15px 20px;
+    }
+
+    .nav-links {
+
+        gap: 12px;
+    }
+
+    .nav-links a {
+
+        font-size: 12px;
+    }
+
+    .page {
+
+        padding:
+            40px
+            15px
+            70px;
+    }
+
+    .booking-card,
+    .info-card {
+
+        padding: 23px 18px;
+    }
+
+    .form-row {
+
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .hero h1 {
+
+        letter-spacing: -1px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ========================================================
+     BACKGROUND
+========================================================= -->
+
+<div class="background"></div>
+
+
+<!-- ========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        Tourist<span>Guide</span>
+    </div>
+
+    <nav class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="booking.html">
+            Booking
+        </a>
+
+    </nav>
+
+</header>
+
+
+<!-- ========================================================
+     PAGE
+========================================================= -->
+
+<main class="page">
+
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <h1>
+            Plan Your Next
+            <br>
+            <span>Adventure</span>
+        </h1>
+
+        <p>
+            Complete the booking form below and
+            start planning your unforgettable
+            Sri Lankan travel experience.
+        </p>
+
+    </section>
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+
+        <!-- =================================================
+             INFORMATION
+        ================================================== -->
+
+        <div class="info-card">
+
+            <h2>
+                Explore Sri Lanka
+            </h2>
+
+            <p>
+                Discover breathtaking places,
+                rich culture and unforgettable
+                experiences with our Tourist
+                Guide Portal.
+            </p>
+
+
+            <!-- SIGIRIYA -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🏯
+                </div>
+
+                <div>
+
+                    <h3>
+                        Sigiriya
+                    </h3>
+
+                    <p>
+                        Ancient rock fortress
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- KANDY -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🛕
+                </div>
+
+                <div>
+
+                    <h3>
+                        Kandy
+                    </h3>
+
+                    <p>
+                        Culture and heritage
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- GALLE -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🏰
+                </div>
+
+                <div>
+
+                    <h3>
+                        Galle
+                    </h3>
+
+                    <p>
+                        Historic coastal city
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- ELLA -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🏔️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Ella
+                    </h3>
+
+                    <p>
+                        Mountains and nature
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- NUWARA ELIYA -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🌿
+                </div>
+
+                <div>
+
+                    <h3>
+                        Nuwara Eliya
+                    </h3>
+
+                    <p>
+                        Tea country and hills
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- YALA -->
+
+            <div class="destination">
+
+                <div class="destination-icon">
+                    🐘
+                </div>
+
+                <div>
+
+                    <h3>
+                        Yala
+                    </h3>
+
+                    <p>
+                        Wildlife and safari
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             BOOKING FORM
+        ================================================== -->
+
+        <div class="booking-card">
+
+            <h2>
+                Tour Booking
+            </h2>
+
+            <p class="subtitle">
+                Enter your details to reserve
+                your tour.
+            </p>
+
+
+            <form id="bookingForm">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Enter your phone number"
+                    >
+
+                </div>
+
+
+                <!-- PLACE -->
+
+                <div class="form-group">
+
+                    <label for="place">
+                        Tourist Place *
+                    </label>
+
+                    <select
+                        id="place"
+                        required
+                    >
+
+                        <option value="">
+                            Select a destination
+                        </option>
+
+                        <option value="Sigiriya">
+                            Sigiriya
+                        </option>
+
+                        <option value="Kandy">
+                            Kandy
+                        </option>
+
+                        <option value="Galle">
+                            Galle
+                        </option>
+
+                        <option value="Ella">
+                            Ella
+                        </option>
+
+                        <option value="Colombo">
+                            Colombo
+                        </option>
+
+                        <option value="Nuwara Eliya">
+                            Nuwara Eliya
+                        </option>
+
+                        <option value="Yala">
+                            Yala
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DATE + PEOPLE -->
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="travelDate">
+                            Travel Date
+                        </label>
+
+                        <input
+                            type="date"
+                            id="travelDate"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="people">
+                            Number of People
+                        </label>
+
+                        <input
+                            type="number"
+                            id="people"
+                            min="1"
+                            max="50"
+                            value="1"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- MESSAGE -->
+
+                <div class="form-group">
+
+                    <label for="notes">
+                        Additional Message
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        placeholder="Any special requests?"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- BUTTON -->
+
+                <button
+                    type="submit"
+                    class="book-button"
+                    id="bookButton"
+                >
+                    Book Now
+                </button>
+
+
+                <!-- STATUS -->
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+            </form>
+
+
+            <!-- SECURITY -->
+
+            <div class="security-note">
+
+                🔒 Your booking information is sent
+                securely to our
+
+                <strong>
+                    Render API
+                </strong>
+
+                and st
