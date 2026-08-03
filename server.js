@@ -1,9 +1,13 @@
-
 const express = require("express");
+const cors = require("cors");
 const { Pool } = require("pg");
 
 const app = express();
 
+// Allow your GitHub website to connect
+app.use(cors());
+
+// Read JSON data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -15,7 +19,7 @@ const pool = new Pool({
   }
 });
 
-// Test API
+// Home / test API
 app.get("/", (req, res) => {
   res.json({
     message: "Tourist Guide Portal API is working!"
@@ -45,7 +49,12 @@ async function createTable() {
 // Save booking
 app.post("/bookings", async (req, res) => {
   try {
-    const { name, email, phone, place } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      place
+    } = req.body;
 
     if (!name || !email) {
       return res.status(400).json({
@@ -54,10 +63,18 @@ app.post("/bookings", async (req, res) => {
     }
 
     const result = await pool.query(
-      `INSERT INTO bookings (name, email, phone, place)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
-      [name, email, phone || null, place || null]
+      `
+      INSERT INTO bookings
+      (name, email, phone, place)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *
+      `,
+      [
+        name,
+        email,
+        phone || null,
+        place || null
+      ]
     );
 
     res.status(201).json({
@@ -92,9 +109,11 @@ app.get("/bookings", async (req, res) => {
   }
 });
 
+// Start server
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, "0.0.0.0", async () => {
   console.log(`Server running on port ${PORT}`);
+
   await createTable();
 });
