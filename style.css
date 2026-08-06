@@ -17,3 +17,6 @@
   width: 200px;
   border-radius: 10px;
 }
+section {
+  animation: fadeIn 1s ease-in;
+}
