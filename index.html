@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="India Explorer — a modern tourist guide portal for discovering destinations, experiences, food and travel tips across India.">
+<title>India Explorer — Tourist Guide Portal</title>
+<style>
+:root{
+  --bg:#07111f;--bg2:#0d1b2e;--panel:rgba(255,255,255,.07);--panel2:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.12);--text:#f7f9fc;--muted:#aeb9ca;
+  --accent:#ff9933;--accent2:#138808;--blue:#38bdf8;--danger:#ef4444;
+  --shadow:0 24px 70px rgba(0,0,0,.35);--radius:22px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+[data-theme="light"]{
+  --bg:#f4f7fb;--bg2:#e9eef6;--panel:rgba(255,255,255,.78);--panel2:#fff;
+  --border:rgba(15,23,42,.1);--text:#142033;--muted:#5e6a7d;
+  --shadow:0 20px 55px rgba(15,23,42,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);
+background:radial-gradient(circle at 10% 0%,rgba(255,153,51,.16),transparent 28%),radial-gradient(circle at 90% 15%,rgba(19,136,8,.12),transparent 25%),var(--bg);min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.container{width:min(1180px,calc(100% - 32px));margin:auto}
+.topbar{height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px;position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.03em}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#ff9933,#fff 50%,#138808);display:grid;place-items:center;color:#07111f;font-size:22px;box-shadow:0 8px 25px rgba(255,153,51,.22)}
+.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.nav{display:flex;gap:24px;color:var(--muted);font-size:13px}
+.nav a:hover{color:var(--text)}
+.actions{display:flex;gap:8px}
+.iconbtn{width:40px;height:40px;border:1px solid var(--border);border-radius:50%;background:var(--panel);color:var(--text)}
+.hero{padding:76px 0 54px;position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;filter:blur(70px);z-index:-1}
+.hero:before{width:300px;height:300px;background:rgba(255,153,51,.18);left:-120px;top:20px}
+.hero:after{width:280px;height:280px;background:rgba(19,136,8,.15);right:-90px;top:60px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.hero h1{font-size:clamp(42px,7vw,78px);line-height:.98;letter-spacing:-.055em;max-width:850px;margin:20px 0 18px}
+.gradient{background:linear-gradient(100deg,#ff9933,#fff 48%,#138808);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:670px;color:var(--muted);font-size:17px;line-height:1.7;margin:0 0 28px}
+.searchbox{display:flex;gap:10px;max-width:760px;padding:9px;background:var(--panel);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}
+.searchbox input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--text);padding:11px;font-size:15px}
+.primary{border:0;border-radius:13px;padding:12px 18px;background:linear-gradient(135deg,#ff9933,#f06c18);color:white;font-weight:700;box-shadow:0 10px 28px rgba(255,153,51,.25)}
+.section{padding:42px 0}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:20px}
+.sectionhead h2{font-size:28px;letter-spacing:-.035em;margin:0}
+.sectionhead p{color:var(--muted);margin:6px 0 0;font-size:13px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filter{padding:9px 13px;border-radius:999px;border:1px solid var(--border);background:var(--panel);color:var(--muted)}
+.filter.active,.filter:hover{background:var(--text);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:transform .25s var(--ease),border-color .25s}
+.card:hover{transform:translateY(-5px);border-color:rgba(255,153,51,.4)}
+.visual{height:190px;position:relative;display:flex;align-items:flex-end;padding:15px;background-size:cover;background-position:center}
+.visual:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 35%,rgba(0,0,0,.7))}
+.visual>*{position:relative;z-index:1}
+.badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);padding:6px 9px;border-radius:999px;font-size:10px;color:white}
+.fav{position:absolute;right:12px;top:12px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.35);color:white}
+.visual h3{margin:0;color:white;font-size:21px;letter-spacing:-.02em}
+.cardbody{padding:15px}
+.cardbody p{margin:0 0 14px;color:var(--muted);font-size:12.5px;line-height:1.55}
+.meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:11px}
+.experiences{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
+.experience{min-height:290px;padding:25px;display:flex;flex-direction:column;justify-content:flex-end;border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;position:relative;background:linear-gradient(135deg,#18314c,#0c1725)}
+.experience:nth-child(2){background:linear-gradient(135deg,#402614,#17251a)}
+.experience:nth-child(3){background:linear-gradient(135deg,#132f38,#211b3c)}
+.experience:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 25%,rgba(255,255,255,.15),transparent 30%)}
+.experience>*{position:relative}
+.experience h3{font-size:25px;margin:0 0 8px}
+.experience p{color:#c5cfdb;max-width:530px;line-height:1.55;font-size:13px;margin:0}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.tool{padding:20px;border:1px solid var(--border);background:var(--panel);border-radius:18px}
+.tool .ico{font-size:25px;margin-bottom:12px}
+.tool h3{margin:0 0 6px;font-size:15px}.tool p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+.plan{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.planner{padding:25px;border:1px solid var(--border);background:var(--panel);border-radius:var(--radius)}
+.planner h3{margin:0 0 5px}.planner p{color:var(--muted);font-size:12px;margin:0 0 18px}
+.selectrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--bg2);color:var(--text);outline:0}
+.result{margin-top:13px;padding:13px;border-radius:12px;background:var(--panel2);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55}
+footer{margin-top:30px;padding:38px 0 60px;border-top:1px solid var(--border);color:var(--muted);font-size:12px}
+.footergrid{display:flex;justify-content:space-between;gap:20px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modalbox{width:min(600px,100%);max-height:90vh;overflow:auto;background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:25px;box-shadow:var(--shadow)}
+.modalhead{display:flex;justify-content:space-between;gap:12px;align-items:start}
+.modalhead h2{margin:0;font-size:27px}.close{border:1px solid var(--border);background:var(--panel);color:var(--text);width:36px;height:36px;border-radius:50%}
+.modalbox p{color:var(--muted);line-height:1.65;font-size:13px}
+.toast{position:fixed;right:18px;bottom:18px;z-index:150;background:var(--bg2);border:1px solid var(--border);padding:13px 16px;border-radius:13px;box-shadow:var(--shadow);font-size:12px;animation:up .3s ease}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.empty{grid-column:1/-1;text-align:center;padding:35px;color:var(--muted);border:1px dashed var(--border);border-radius:18px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.experiences,.plan{grid-template-columns:1fr}.tools{grid-template-columns:1fr 1fr}.nav{display:none}}
+@media(max-width:560px){.container{width:min(100% - 22px,1180px)}.topbar{height:66px}.brand small{display:none}.hero{padding:50px 0 35px}.hero h1{font-size:45px}.searchbox{display:block;background:transparent;border:0;box-shadow:none;padding:0}.searchbox input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:13px;margin-bottom:8px}.primary{width:100%}.grid{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.section{padding:30px 0}.sectionhead{display:block}.sectionhead h2{font-size:24px}.footergrid{display:block}.selectrow{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-theme="dark">
+
+<header class="topbar">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+    <a class="brand" href="#">
+      <div class="logo">🇮🇳</div>
+      <div>India Explorer<small>Tourist Guide Portal</small></div>
+    </a>
+    <nav class="nav">
+      <a href="#destinations">Destinations</a>
+      <a href="#experiences">Experiences</a>
+      <a href="#planner">Planner</a>
+      <a href="#tips">Travel Tips</a>
+    </nav>
+    <div class="actions">
+      <button class="iconbtn" id="themeBtn" aria-label="Toggle theme">☾</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span> Explore incredible India</span>
+    <h1>Find your next <span class="gradient">Indian adventure.</span></h1>
+    <p>Discover iconic cities, beaches, mountains, heritage, food and unforgettable experiences — all in one simple tourist guide.</p>
+    <div class="searchbox">
+      <input id="search" type="search" placeholder="Search Delhi, Goa, Kerala, Jaipur..." aria-label="Search destinations">
+      <button class="primary" id="searchBtn">Explore destinations →</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="destinations">
+<div class="container">
+  <div class="sectionhead">
+    <div><h2>Popular destinations</h2><p>Start with some of India's most-loved travel regions.</p></div>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter active" data-filter="All">All</button>
+    <button class="filter" data-filter="Heritage">Heritage</button>
+    <button class="filter" data-filter="Beach">Beach</button>
+    <button class="filter" data-filter="Mountain">Mountain</button>
+    <button class="filter" data-filter="Nature">Nature</button>
+    <button class="filter" data-filter="City">City</button>
+  </div>
+  <div class="grid" id="destinationGrid"></div>
+</div>
+</section>
+
+<section class="section" id="experiences">
+<div class="container">
+  <div class="sectionhead"><div><h2>Travel by experience</h2><p>Choose the kind of trip you want to remember.</p></div></div>
+  <div class="experiences">
+    <article class="experience"><span class="badge">HERITAGE</span><h3>Walk through history</h3><p>Explore forts, palaces, monuments, old cities and cultural landmarks from India's long and diverse history.</p></article>
+    <article class="experience"><span class="badge">NATURE</span><h3>Mountains & forests</h3><p>From Himalayan landscapes to lush southern escapes, find a slower side of India.</p></article>
+    <article class="experience"><span class="badge">FOOD & CULTURE</span><h3>Taste India</h3><p>Discover regional cuisines, street-food traditions, festivals and local markets.</p></article>
+  </div>
+</div>
+</section>
+
+<section class="section" id="planner">
+<div class="container">
+  <div class="sectionhead"><div><h2>Quick trip planner</h2><p>Get a simple starting point for your next trip.</p></div></div>
+  <div class="plan">
+    <div class="planner">
+      <h3>Build a trip idea</h3><p>Select your interests and trip length.</p>
+      <div class="selectrow">
+        <select id="interest"><option value="heritage">Heritage & culture</option><option value="beach">Beaches & relaxation</option><option value="mountain">Mountains & adventure</option><option value="nature">Nature & wildlife</option><option value="city">Cities & food</option></select>
+        <select id="days"><option value="3">3 days</option><option value="5">5 days</option><option value="7">7 days</option><option value="10">10 days</option></select>
+      </div>
+      <button class="primary" style="margin-top:12px;width:100%" id="planBtn">Create suggestion</button>
+      <div class="result" id="planResult">Your itinerary suggestion will appear here.</div>
+    </div>
+    <div class="planner" id="tips">
+      <h3>Smart travel tips</h3><p>Useful reminders before you set off.</p>
+      <div class="tools" style="grid-template-columns:1fr">
+        <div class="tool"><div class="ico">🪪</div><h3>Documents</h3><p>Keep identification, bookings and important travel documents accessible.</p></div>
+        <div class="tool"><div class="ico">💧</div><h3>Stay prepared</h3><p>Carry water, comfortable footwear and weather-appropriate clothing for your route.</p></div>
+        <div class="tool"><div class="ico">🤝</div><h3>Travel respectfully</h3><p>Respect local customs, communities, heritage sites and natural environments.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="section">
+<div class="container">
+  <div class="sectionhead"><div><h2>Travel essentials</h2><p>Helpful categories to keep your planning organized.</p></div></div>
+  <div class="tools">
+    <div class="tool"><div class="ico">🏨</div><h3>Stay</h3><p>Compare the type of accommodation you want — hotels, resorts, hostels or homestays.</p></div>
+    <div class="tool"><div class="ico">🍛</div><h3>Food</h3><p>Try regional dishes and local food experiences wherever your journey takes you.</p></div>
+    <div class="tool"><div class="ico">🚆</div><h3>Getting around</h3><p>Plan flights, trains, buses, taxis and local transport between destinations.</p></div>
+  </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container footergrid">
+  <div><strong style="color:var(--text)">🇮🇳 India Explorer</strong><br>Tourist Guide Portal</div>
+  <div>Made with HTML, CSS & JavaScript · <span id="year"></span></div>
+</div>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <div class="modalhead"><div><span class="eyebrow" id="modalType">DESTINATION</span><h2 id="modalTitle" style="margin-top:12px"></h2></div><button class="close" id="closeModal">×</button></div>
+    <p id="modalText"></p>
+    <div class="result" id="modalInfo"></div>
+  </div>
+</div>
+
+<script>
+const destinations=[
+ {name:"Goa",state:"Goa",type:"Beach",icon:"🏝️",tag:"Beach",text:"A popular coastal destination known for beaches, Portuguese-influenced heritage, markets and a lively holiday atmosphere.",best:"Beach escapes • Food • Culture"},
+ {name:"Jaipur",state:"Rajasthan",type:"Heritage",icon:"🏰",tag:"Heritage",text:"The Pink City is a gateway to Rajasthan's forts, palaces, bazaars and colorful cultural traditions.",best:"Forts • Palaces • Markets"},
+ {name:"Kerala",state:"Kerala",type:"Nature",icon:"🌴",tag:"Nature",text:"A lush southern destination with backwaters, beaches, hill landscapes, local cuisine and relaxed stays.",best:"Backwaters • Nature • Food"},
+ {name:"Manali",state:"Himachal Pradesh",type:"Mountain",icon:"🏔️",tag:"Mountain",text:"A Himalayan getaway popular for mountain scenery, outdoor activities and cool-weather escapes.",best:"Mountains • Adventure • Snow"},
+ {name:"Delhi",state:"Delhi",type:"City",icon:"🏛️",tag:"City",text:"India's capital combines major monuments, museums, markets, food and neighborhoods with layers of history.",best:"History • Food • Museums"},
+ {name:"Agra",state:"Uttar Pradesh",type:"Heritage",icon:"🕌",tag:"Heritage",text:"A historic city famous for monumental Mughal-era architecture and an essential stop on many north India journeys.",best:"Heritage • Architecture • History"},
+ {name:"Sikkim",state:"Sikkim",type:"Mountain",icon:"⛰️",tag:"Mountain",text:"A Himalayan state offering dramatic mountain views, monasteries, scenic roads and peaceful landscapes.",best:"Mountains • Monasteries • Nature"},
+ {name:"Andaman Islands",state:"Andaman & Nicobar Islands",type:"Beach",icon:"🐚",tag:"Beach",text:"Tropical islands with beaches, marine scenery and opportunities for water-based experiences.",best:"Beaches • Islands • Water"}
+];
+
+const grid=document.getElementById("destinationGrid");
+let activeFilter="All";
+
+function render(list=destinations){
+ grid.innerHTML="";
+ if(!list.length){grid.innerHTML='<div class="empty">No destinations found. Try another search.</div>';return}
+ list.forEach((d,i)=>{
+   const el=document.createElement("article");
+   el.className="card";
+   el.innerHTML=`
+    <div class="visual" style="background-image:linear-gradient(135deg,rgba(15,23,42,.3),rgba(15,23,42,.72)),radial-gradient(circle at 70% 30%,rgba(255,153,51,.4),transparent 35%)">
+      <span class="badge">${d.tag}</span><button class="fav" aria-label="Favorite ${d.name}" data-fav="${d.name}">♡</button>
+      <h3>${d.icon} ${d.name}</h3>
+    </div>
+    <div class="cardbody"><p>${d.text}</p><div class="meta"><span>${d.state}</span><span>${d.best}</span></div>
+    <button class="primary" style="width:100%;margin-top:13px" data-open="${i}">View guide</button></div>`;
+   grid.appendChild(el);
+ });
+ grid.querySelectorAll("[data-open]").forEach(btn=>{
+   btn.onclick=()=>openGuide(destinations.find(d=>d.name===btn.closest(".card").querySelector("h3").textContent.replace(d.icon+" ","")));
+ });
+ grid.querySelectorAll("[data-fav]").forEach(btn=>btn.onclick=()=>{
+   btn.textContent=btn.textContent==="♡"?"♥":"♡";
+   showToast(btn.textContent==="♥"?"Saved to favorites":"Removed from favorites");
+ });
+}
+function openGuide(d){
+ document.getElementById("modalTitle").textContent=d.name;
+ document.getElementById("modalType").textContent=d.type;
+ document.getElementById("modalText").textContent=d.text;
+ document.getElementById("modalInfo").innerHTML="<strong>Great for:</strong> "+d.best+"<br><strong>Region:</strong> "+d.state+"<br><br>Use this guide as a starting point and check current transport, accommodation, opening hours and local advisories before traveling.";
+ document.getElementById("modal").classList.add("show");
+}
+document.getElementById("closeModal").onclick=()=>document.getElementById("modal").classList.remove("show");
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("show")};
+
+document.querySelectorAll(".filter").forEach(btn=>btn.onclick=()=>{
+ document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));btn.classList.add("active");
+ activeFilter=btn.dataset.filter;
+ const q=document.getElementById("search").value.toLowerCase();
+ render(destinations.filter(d=>(activeFilter==="All"||d.type===activeFilter)&&(!q||d.name.toLowerCase().includes(q)||d.state.toLowerCase().includes(q)||d.type.toLowerCase().includes(q))));
+});
+function doSearch(){
+ const q=document.getElementById("search").value.toLowerCase().trim();
+ render(destinations.filter(d=>(activeFilter==="All"||d.type===activeFilter)&&(!q||`${d.name} ${d.state} ${d.type}`.toLowerCase().includes(q))));
+ document.getElementById("destinations").scrollIntoView({behavior:"smooth"});
+}
+document.getElementById("searchBtn").onclick=doSearch;
+document.getElementById("search").addEventListener("keydown",e=>{if(e.key==="Enter")doSearch()});
+
+document.getElementById("planBtn").onclick=()=>{
+ const interest=document
