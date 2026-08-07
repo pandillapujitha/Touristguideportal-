@@ -1,17 +1,15 @@
 
-// 🔥 REPLACE WITH YOUR FIREBASE CONFIG
+// 🔥 YOUR FIREBASE CONFIG (PASTE YOUR REAL KEYS)
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_PROJECT.firebaseapp.com",
   projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "XXXX",
-  appId: "XXXX"
 };
 
 firebase.initializeApp(firebaseConfig);
 
 const db = firebase.firestore();
+
 
 // 🔐 SIGNUP
 function signup() {
@@ -19,9 +17,14 @@ function signup() {
   const password = document.getElementById("password").value;
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => alert("Signup Successful ✅"))
-    .catch((e) => alert(e.message));
+    .then(() => {
+      alert("Signup Successful ✅");
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
 }
+
 
 // 🔐 LOGIN
 function login() {
@@ -29,15 +32,23 @@ function login() {
   const password = document.getElementById("password").value;
 
   firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => alert("Login Successful ✅"))
-    .catch((e) => alert(e.message));
+    .then(() => {
+      alert("Login Successful ✅");
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
 }
+
 
 // 🔐 LOGOUT
 function logout() {
   firebase.auth().signOut()
-    .then(() => alert("Logged out ✅"));
+    .then(() => {
+      alert("Logged out ✅");
+    });
 }
+
 
 // 👤 SHOW USER
 firebase.auth().onAuthStateChanged((user) => {
@@ -45,7 +56,8 @@ firebase.auth().onAuthStateChanged((user) => {
     user ? "Logged in as: " + user.email : "Not logged in";
 });
 
-// 📅 BOOK (ONLY IF LOGGED IN)
+
+// 📅 BOOK GUIDE (STORE DATA IN FIRESTORE)
 function bookGuide() {
   const name = document.getElementById("name").value;
   const place = document.getElementById("place").value;
@@ -58,11 +70,15 @@ function bookGuide() {
   }
 
   db.collection("bookings").add({
-    name,
-    place,
+    name: name,
+    place: place,
     userEmail: user.email,
-    time: new Date()
+    createdAt: new Date()
   })
-  .then(() => alert("Booking Successful ✅"))
-  .catch(() => alert("Error ❌"));
+  .then(() => {
+    alert("Booking Successful ✅");
+  })
+  .catch((error) => {
+    alert("Error: " + error.message);
+  });
 }
