@@ -1,0 +1,24 @@
+
+function searchPlace() {
+  let place = document.getElementById("placeInput").value;
+
+  document.getElementById("results").innerHTML =
+    `<h3>Showing results for ${place}</h3>`;
+
+  // Map update
+  document.getElementById("map").src =
+    `https://www.google.com/maps?q=${place}&output=embed`;
+}
+
+// Booking
+function bookGuide() {
+  let name = document.getElementById("name").value;
+  let place = document.getElementById("place").value;
+
+  db.collection("bookings").add({
+    name: name,
+    place: place
+  })
+  .then(() => alert("Booking Successful ✅"))
+  .catch(err => console.log(err));
+}
