@@ -1,4 +1,3 @@
-
 // 🔍 SEARCH FUNCTION
 function searchPlace() {
   const place = document.getElementById("placeInput").value;
@@ -12,5 +11,5 @@ function searchPlace() {
     "https://www.google.com/maps?q=" + encodeURIComponent(place) + "&output=embed";
 
   document.getElementById("results").innerHTML =
-    "<p>Showing results for: <b>" + place + "</b></p>";
+    "Showing results for: " + place;
 }
