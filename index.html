@@ -1,65 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tourist Guide Portal</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Login</title>
 </head>
 
 <body>
 
-<header>
-  <h1>🌍 Tourist Guide Portal</h1>
-</header>
+  <h2>Login</h2>
 
-<!-- 🔍 SEARCH -->
-<section class="search">
-  <input type="text" id="placeInput" placeholder="Search place...">
-  <button onclick="searchPlace()">Search</button>
-</section>
+  <input type="email" id="email" placeholder="Enter email"><br><br>
+  <input type="password" id="password" placeholder="Enter password"><br><br>
 
-<section id="results"></section>
-
-<!-- 📍 MAP -->
-<section>
-  <h2>📍 Map</h2>
-  <iframe id="map"
-    width="100%" height="300"
-    style="border:0;" loading="lazy">
-  </iframe>
-</section>
-
-<!-- 🔐 LOGIN SECTION (ADDED ✅) -->
-<section>
-  <h2>🔐 Login / Signup</h2>
-
-  <input type="email" id="email" placeholder="Enter Email">
-  <input type="password" id="password" placeholder="Enter Password">
-
-  <button onclick="signup()">Signup</button>
   <button onclick="login()">Login</button>
-  <button onclick="logout()">Logout</button>
 
-  <p id="user">Not logged in</p>
-</section>
+  <!-- ✅ PASTE YOUR SCRIPT HERE -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
-<!-- 📅 BOOK -->
-<section>
-  <h2>📅 Book Guide</h2>
+    const firebaseConfig = {
+      apiKey: "YOUR_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
 
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="text" id="place" placeholder="Place">
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  <button onclick="bookGuide()">Book</button>
-</section>
+    window.login = function () {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-<!-- ✅ CORRECT Firebase Scripts -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<!-- Your Files -->
-<script src="firebase.js"></script>
-<script src="script.js"></script>
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => alert("Login Successful ✅"))
+        .catch(err => alert(err.message));
+    };
+  </script>
 
 </body>
 </html>
